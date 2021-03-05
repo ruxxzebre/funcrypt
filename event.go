@@ -36,8 +36,7 @@ func (r *Event) ChangeOccurCount(count int) {
 func (r *Event) ChangeProbabilityFormat(format ProbabilityFormat) error {
 	switch format {
 	case Percentage:
-		// why !(r.probability < 1.0) not work????
-		if r.probability < 1.0 {
+		if r.probability > 1.0 {
 			r.probability *= 100
 			r.formatPostfix = "%"
 		}
