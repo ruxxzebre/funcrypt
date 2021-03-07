@@ -1,4 +1,4 @@
-package main
+package events
 
 import (
 	"fmt"
@@ -53,10 +53,10 @@ func (r *Event) ChangeProbabilityFormat(format ProbabilityFormat) error {
 }
 
 func (r Event) String() string {
-	return fmt.Sprintf("Probability of '%v' event is %v%v", r.name, r.probability, r.formatPostfix)
+	return fmt.Sprintf("Probability of '%v' events is %v%v", r.name, r.probability, r.formatPostfix)
 }
 
-func newEvent(name string, occurCount int, totalOutcomes int) *Event {
+func NewEvent(name string, occurCount int, totalOutcomes int) *Event {
 	return &Event{
 		name:          name,
 		occurCount:    occurCount,
