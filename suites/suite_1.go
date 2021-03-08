@@ -9,7 +9,7 @@ import (
 	"strconv"
 )
 
-func lab1_1() {
+func lab11() {
 	whiteBalloons := 3
 	blackBalloons := 7
 	totalBalloons := 10
@@ -23,7 +23,7 @@ func lab1_1() {
 	fmt.Println(event)
 }
 
-func lab1_2() {
+func lab12() {
 	// doesn't really matter how much is Coin10, the ration always be the same
 	Coin10 := 1
 	Coin2 := Coin10 * 3
@@ -33,7 +33,7 @@ func lab1_2() {
 	fmt.Println(event)
 }
 
-func lab1_3() {
+func lab13() {
 	cubesQuantity := 1000
 	cubeSides := 3
 	event := events.NewEvent("Cubes", 1, cubesQuantity*cubeSides)
@@ -44,13 +44,13 @@ func lab1_3() {
 	}
 }
 
-func lab1_4() {
+func lab14() {
 	const lessThan = 10
 	notDividingBy2And3 := lessThan - math.Floor(lessThan/2-lessThan/3)
 	fmt.Println(notDividingBy2And3)
 }
 
-func lab1_5() {
+func lab15() {
 	// TODO!
 	condition := func(initial int, conditions ...int) []int {
 		intarr := []int{}
@@ -71,12 +71,12 @@ func lab1_5() {
 	fmt.Println(result)
 }
 
-var tasks_1 = map[int]func(){
-	1: lab1_1,
-	2: lab1_2,
-	3: lab1_3,
-	4: lab1_4,
-	5: lab1_5,
+var tasks1 = map[int]func(){
+	1: lab11,
+	2: lab12,
+	3: lab13,
+	4: lab14,
+	5: lab15,
 }
 
 func runSuite1(num int) {
@@ -87,8 +87,7 @@ func runSuite1(num int) {
 }
 
 func runTask(num int) error {
-	// if Tasks contains num
-	if task, ok := tasks_1[num]; ok {
+	if task, ok := tasks1[num]; ok {
 		task()
 		return nil
 	}

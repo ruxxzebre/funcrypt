@@ -1,13 +1,15 @@
 package suites
 
+import "fmt"
+
 func runSuite2(num int) {
+	fmt.Print(num)
+}
+
+func lab21() {
 
 }
 
-func lab2_1() {
-
-}
-
-var tasks_2 = map[int]func(){
-	1: lab2_1,
+var tasks2 = map[int]func(){
+	1: lab21,
 }

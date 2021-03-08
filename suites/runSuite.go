@@ -13,8 +13,8 @@ type suiteValue struct {
 }
 
 var suites = map[int]suiteValue{
-	1: {runSuite1, tasks_1},
-	2: {runSuite2, tasks_2},
+	1: {runSuite1, tasks1},
+	2: {runSuite2, tasks2},
 }
 
 func RunSuite(suite, task int) error {
@@ -31,7 +31,6 @@ func GetTaskAmount(suite int) (int, error) {
 		return len(suite.tasks), nil
 	}
 	return 0, errors.New("unknown suite")
-	//return 0, errors.New("unknown suite")
 }
 
 func GetSuiteAmount() int {
