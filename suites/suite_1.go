@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/ruxxzebre/combinatorix_labs/events"
+	"github.com/ruxxzebre/combinatorix_labs/events/operations"
 	"log"
 	"math"
 	"strconv"
@@ -46,8 +47,39 @@ func lab13() {
 
 func lab14() {
 	const lessThan = 10
-	notDividingBy2And3 := lessThan - math.Floor(lessThan/2-lessThan/3)
-	fmt.Println(notDividingBy2And3)
+	NumsDividingBy2 := int(math.Floor(lessThan / 2))
+	NumsDividingBy3 := int(math.Floor(lessThan / 3))
+	NumsDividingBy2And3 := NumsDividingBy2 + NumsDividingBy3
+	NumsNotDividingBy2 := lessThan - NumsDividingBy2
+	NumsNotDividingBy3 := lessThan - NumsDividingBy3
+
+	notDividingBy2 := events.NewEvent("Not div by 2", NumsNotDividingBy2, lessThan)
+	notDividingBy3 := events.NewEvent("Not div by 3", NumsNotDividingBy3, lessThan)
+	dividingBy2 := events.NewEvent("Div by 2", NumsDividingBy2, lessThan)
+	dividingBy3 := events.NewEvent("Div by 3", NumsDividingBy3, lessThan)
+	dividingBy2And3 := events.NewEvent("Div by 2 and 3", NumsDividingBy2And3, lessThan)
+
+	NeitherDividingBy2Nor3 := events.CombineEvents(
+		"1. Neither div by 2 nor 3",
+		operations.Addition,
+		notDividingBy3,
+		notDividingBy3)
+	EitherDividingBy2ORr3 := events.CombineEvents(
+		"2. Either div by 2 or 3",
+		operations.Multiplication,
+		notDividingBy2,
+		notDividingBy3)
+	DividingBy2_3Or2And3 := events.CombineEvents(
+		"3. Div by 2, 3 or 2 and 3",
+		operations.Multiplication,
+		dividingBy2And3,
+		dividingBy2,
+		dividingBy3,
+	)
+
+	fmt.Println(NeitherDividingBy2Nor3)
+	fmt.Println(EitherDividingBy2ORr3)
+	fmt.Println(DividingBy2_3Or2And3)
 }
 
 func lab15() {
