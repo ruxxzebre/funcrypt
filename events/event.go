@@ -42,3 +42,17 @@ func NewEvent(name string, occurCount int, totalOutcomes int) *Event {
 		format:        DefaultFormat,
 	}
 }
+
+func CombineEvents(name string, op func(...float32) float32, events ...*Event) *Event {
+	var probability float32
+	for _, event := range events {
+		probability = op(event.probability, probability)
+	}
+	return &Event{
+		name:          name,
+		occurCount:    1,
+		totalOutcomes: 1,
+		probability:   probability,
+		format:        DefaultFormat,
+	}
+}
