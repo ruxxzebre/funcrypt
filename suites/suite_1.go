@@ -5,17 +5,15 @@ import (
 	"fmt"
 	"github.com/ruxxzebre/combinatorix_labs/events"
 	"log"
+	"math"
 	"strconv"
 )
-
-const suite1TaskAmount = 5
 
 func lab1_1() {
 	whiteBalloons := 3
 	blackBalloons := 7
 	totalBalloons := 10
 	event := events.NewEvent("Balloons", whiteBalloons, totalBalloons)
-	_ = event.ChangeProbabilityFormat(events.Percentage)
 
 	fmt.Printf("White baloons: ")
 	fmt.Println(event)
@@ -31,7 +29,6 @@ func lab1_2() {
 	Coin2 := Coin10 * 3
 	totalCoins := Coin10 + Coin2
 	event := events.NewEvent("Coins", Coin10, totalCoins)
-	_ = event.ChangeProbabilityFormat(events.Percentage)
 
 	fmt.Println(event)
 }
@@ -40,7 +37,7 @@ func lab1_3() {
 	cubesQuantity := 1000
 	cubeSides := 3
 	event := events.NewEvent("Cubes", 1, cubesQuantity*cubeSides)
-	_ = event.ChangeProbabilityFormat(events.Percentage)
+
 	for i := 1; i <= 3; i++ {
 		fmt.Printf("Edges: %v. %v\n", i, event)
 		event.ChangeOccurCount(i + 1)
@@ -48,7 +45,9 @@ func lab1_3() {
 }
 
 func lab1_4() {
-	// Chosen number
+	const lessThan = 10
+	notDividingBy2And3 := lessThan - math.Floor(lessThan/2-lessThan/3)
+	fmt.Println(notDividingBy2And3)
 }
 
 func lab1_5() {
@@ -72,7 +71,7 @@ func lab1_5() {
 	fmt.Println(result)
 }
 
-var tasks = map[int]func(){
+var tasks_1 = map[int]func(){
 	1: lab1_1,
 	2: lab1_2,
 	3: lab1_3,
@@ -89,7 +88,7 @@ func runSuite1(num int) {
 
 func runTask(num int) error {
 	// if Tasks contains num
-	if task, ok := tasks[num]; ok {
+	if task, ok := tasks_1[num]; ok {
 		task()
 		return nil
 	}

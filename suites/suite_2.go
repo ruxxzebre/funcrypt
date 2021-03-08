@@ -1,7 +1,13 @@
 package suites
 
-const suite2TaskAmount = 5
+func runSuite2(num int) {
 
-func runSuite2(num int) int {
-	return num
+}
+
+func lab2_1() {
+
+}
+
+var tasks_2 = map[int]func(){
+	1: lab2_1,
 }

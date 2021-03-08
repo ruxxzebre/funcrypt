@@ -3,34 +3,39 @@ package suites
 import (
 	"errors"
 	"fmt"
+	"github.com/ruxxzebre/combinatorix_labs/events"
+	"github.com/ruxxzebre/combinatorix_labs/events/format"
 )
 
-const suitesAmount = 2
+type suiteValue struct {
+	run   func(int)
+	tasks map[int]func()
+}
+
+var suites = map[int]suiteValue{
+	1: suiteValue{runSuite1, tasks_1},
+	2: suiteValue{runSuite2, tasks_2},
+}
 
 func RunSuite(suite, task int) error {
-	switch suite {
-	case 1:
-		runSuite1(task)
-		return nil
-	case 2:
-		runSuite2(task)
+	events.ChangeDefaultFormat(format.Percentage)
+	if suite, ok := suites[suite]; ok {
+		suite.run(task)
 		return nil
 	}
 	return errors.New("unknown suite")
 }
 
 func GetTaskAmount(suite int) (int, error) {
-	switch suite {
-	case 1:
-		return suite1TaskAmount, nil
-	case 2:
-		return suite2TaskAmount, nil
+	if suite, ok := suites[suite]; ok {
+		return len(suite.tasks), nil
 	}
 	return 0, errors.New("unknown suite")
+	//return 0, errors.New("unknown suite")
 }
 
 func GetSuiteAmount() int {
-	return suitesAmount
+	return len(suites)
 }
 
 type Msg struct {
