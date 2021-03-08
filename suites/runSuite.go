@@ -13,8 +13,8 @@ type suiteValue struct {
 }
 
 var suites = map[int]suiteValue{
-	1: suiteValue{runSuite1, tasks_1},
-	2: suiteValue{runSuite2, tasks_2},
+	1: {runSuite1, tasks_1},
+	2: {runSuite2, tasks_2},
 }
 
 func RunSuite(suite, task int) error {
