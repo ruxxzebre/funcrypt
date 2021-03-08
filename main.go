@@ -31,13 +31,9 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err == nil {
-		if err = suites.RunSuite(suiteNum, taskNum); err == nil {
-			fmt.Printf("Fine!\n")
-		} else {
-			fmt.Println("Maybe try to pass an integer?")
-		}
+	if err = suites.RunSuite(suiteNum, taskNum); err == nil {
+		fmt.Printf("Fine!\n")
 	} else {
-		fmt.Printf("%v\n", err)
+		fmt.Println("Maybe try to pass an integer?")
 	}
 }
