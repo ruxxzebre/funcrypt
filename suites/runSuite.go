@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/ruxxzebre/combinatorix_labs/events"
-	"github.com/ruxxzebre/combinatorix_labs/events/format"
+	"math"
 )
 
 type suiteValue struct {
@@ -18,7 +18,13 @@ var suites = map[int]suiteValue{
 }
 
 func RunSuite(suite, task int) error {
-	events.ChangeDefaultFormat(format.Percentage)
+	var Percentage = func(x float32) string {
+		if x < 1.0 {
+			return fmt.Sprintf("%v%%", math.Floor(float64(x*100)))
+		}
+		return fmt.Sprintf("%v%", x)
+	}
+	events.ChangeDefaultFormat(Percentage)
 	if suite, ok := suites[suite]; ok {
 		suite.run(task)
 		return nil

@@ -2,12 +2,13 @@ package events
 
 import (
 	"fmt"
-	"github.com/ruxxzebre/combinatorix_labs/events/format"
 )
 
-var DefaultFormat format.ProbabilityFormat = ""
+type ProbabilityFormat func(float32) string
 
-func ChangeDefaultFormat(format format.ProbabilityFormat) {
+var DefaultFormat = func(x float32) string { return fmt.Sprintf("%v", x) }
+
+func ChangeDefaultFormat(format ProbabilityFormat) {
 	DefaultFormat = format
 }
 
@@ -16,7 +17,7 @@ type Event struct {
 	occurCount    int
 	totalOutcomes int
 	probability   float32
-	format        format.ProbabilityFormat
+	format        ProbabilityFormat
 }
 
 func (r *Event) ChangeOccurCount(count int) {
@@ -25,12 +26,12 @@ func (r *Event) ChangeOccurCount(count int) {
 	r.ChangeProbabilityFormat(r.format)
 }
 
-func (r *Event) ChangeProbabilityFormat(format format.ProbabilityFormat) {
+func (r *Event) ChangeProbabilityFormat(format ProbabilityFormat) {
 	r.format = format
 }
 
 func (r Event) String() string {
-	return fmt.Sprintf("Probability of '%v' events is %v%v", r.name, r.probability, r.format)
+	return fmt.Sprintf("Probability of '%v' events is %v", r.name, r.format(r.probability))
 }
 
 func NewEvent(name string, occurCount int, totalOutcomes int) *Event {
