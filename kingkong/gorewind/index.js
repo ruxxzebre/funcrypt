@@ -5,6 +5,9 @@ const ec = new require("elliptic").ec("secp256k1");
 
 class Transaction {
   constructor(from, to, amount) {
+    if (amount < 0) {
+      throw new Error("Amount cannot be less then 0.");
+    }
     this.fromAddress = from;
     this.toAddress = to;
     this.amount = amount;
@@ -43,6 +46,11 @@ class Transaction {
 class Block {
   constructor(timestamp, transactions, previousHash = "") {
     this.timestamp = timestamp;
+    /**
+     * transactions
+     * @type {Transaction[]}
+     * @public
+     */
     this.transactions = transactions;
     this.previousHash = previousHash;
     this.hash = this.calculateHash();
@@ -81,10 +89,20 @@ function createGenesisBlock() {
 
 class Blockchain {
   constructor({ difficulty, miningReward, dumpChain, dumpTransactions } = {}) {
+    /**
+     * Block chain
+     * @type {Block[]}
+     * @public
+     */
     this.chain = dumpChain || [createGenesisBlock()];
     this.difficulty = difficulty || 3;
+    /**
+     * pending transactions
+     * @type {Transaction[]}
+     * @public
+     */
     this.pendingTransactions = dumpTransactions || [];
-    this.miningReward = 100;
+    this.miningReward = miningReward || 100;
   }
 
   minePendingTransactions(miningRewardAddress) {
@@ -111,12 +129,41 @@ class Blockchain {
     this.pendingTransactions.push(transaction);
   }
 
+  /**
+   *
+   * @param address
+   * @param {'from', 'to', null} direction
+   * @returns Transaction[]
+   */
+  getTransactionsOfAddress(address, direction = null) {
+    const txs = [];
+    const enforce = (tx) => {
+      switch (direction) {
+        case 'from': {
+          if (tx.fromAddress === address) txs.push(tx);
+          break;
+        }
+        case 'to': {
+          if (tx.toAddress === address) txs.push(tx);
+          break;
+        }
+        default: {
+          if (tx.toAddress === address || tx.fromAddress === address) txs.push(tx);
+        }
+      }
+    }
+    for (const block of this.chain)
+      for (const tx of block.transactions)
+        enforce(tx);
+    return txs;
+  }
+
   getBalanceOfAddress(address) {
     let balance = 0;
     for (const block of this.chain) {
-      for (const trans of block.transactions) {
-        if (trans.fromAddress === address) balance -= trans.amount;
-        if (trans.toAddress === address) balance += trans.amount;
+      for (const tx of block.transactions) {
+        if (tx.fromAddress === address) balance -= tx.amount;
+        if (tx.toAddress === address) balance += tx.amount;
       }
     }
 
