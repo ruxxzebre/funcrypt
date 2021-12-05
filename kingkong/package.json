@@ -4,8 +4,8 @@
   "license": "MIT",
   "private": true,
   "workspaces": [
-    "clyend",
-    "gorewind",
-    "kingoall"
+    "tamarin",
+    "howler",
+    "langur"
   ]
 }
