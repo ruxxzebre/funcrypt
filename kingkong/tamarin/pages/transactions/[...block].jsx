@@ -1,4 +1,5 @@
 import {useRouter} from "next/router";
+import {useTransactions} from "../../lib/blockchainHooks";
 
 const BlockTransactions = () => {
     const router = useRouter();
