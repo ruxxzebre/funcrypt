@@ -1,4 +1,5 @@
-import { Blockchain, Transaction } from "gorewind";
+import { Blockchain } from "langur";
+import axios from "axios";
 import * as fs from "fs";
 
 const dump = JSON.parse(fs.readFileSync("dump.json"));
@@ -8,8 +9,9 @@ export const bcInstance = new Blockchain({
   dumpChain: dump.chain,
 });
 
-setTimeout(() => {
-  console.log(bcInstance.chain);
-  fs.writeFileSync("dump.json", JSON.stringify(bcInstance));
-  console.log("dumped");
-}, 1500);
+const BC_BACKEND_PORT = 666;
+
+// Blockchain API
+const bAPI = axios.create({
+  baseURL: `http://localhost:${BC_BACKEND_PORT}`
+});

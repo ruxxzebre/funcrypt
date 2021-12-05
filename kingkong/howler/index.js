@@ -1,5 +1,4 @@
 const express = require("express");
-const fs = require("fs");
 const EC = require("elliptic").ec;
 const { Blockchain, Transaction } = require("langur");
 const { generatePair, formatPair} = require("langur/kg");
