@@ -1,8 +1,8 @@
 const express = require("express");
 const fs = require("fs");
 const EC = require("elliptic").ec;
-const { Blockchain, Transaction } = require("gorewind");
-const { generatePair, formatPair} = require("gorewind/kg");
+const { Blockchain, Transaction } = require("langur");
+const { generatePair, formatPair} = require("langur/kg");
 
 const BCInstance = new Blockchain({
     difficulty: 4,
