@@ -1,7 +1,8 @@
 const express = require("express");
 const EC = require("elliptic").ec;
-const { Blockchain, Transaction } = require("langur");
-const { generatePair, formatPair} = require("langur/kg");
+const cors = require("cors");
+const {Blockchain, Transaction} = require("langur");
+const {generatePair, formatPair} = require("langur/kg");
 
 const BCInstance = new Blockchain({
     difficulty: 4,
@@ -10,11 +11,14 @@ const BCInstance = new Blockchain({
 
 const app = express();
 const router = express.Router();
+app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({extended: true}));
 
 router.get("/wallet/balance/:address", (req, res) => {
-    res.json({ balance: BCInstance.getBalanceOfAddress(req.params.address) });
+    const balance = BCInstance.getBalanceOfAddress(req.params.address);
+    console.log(balance);
+    res.json({balance});
 });
 
 router.get("/wallet/generate-keys", (_req, res, next) => {
@@ -22,7 +26,13 @@ router.get("/wallet/generate-keys", (_req, res, next) => {
     res.locals.result = formatPair(generatePair());
     next();
 }, (req, res) => {
-    res.send({ data: res.locals.result });
+    res.send({data: res.locals.result});
+});
+
+router.get("/wallet/transactions/:address", (req, res) => {
+    console.log(`Transaction with ${req.params.address} address read.`);
+    const txs = BCInstance.getTransactionsOfAddress(req.params.address);
+    return res.json({transactions: txs});
 });
 
 router.get("/chain", (req, res) => {
@@ -43,18 +53,12 @@ router.get("/chain/filter", (req, res) => {
 router.get("/block/:hash?", (req, res) => {
     console.log(`Block with ${req.params.hash} read.`);
     const found = BCInstance.chain.find((i) => i.hash === req.params.hash);
-    if (!found) return res.json({ blocks: BCInstance.chain });
-    return res.json({ block: found });
-});
-
-router.get("/transactions/:address", (req, res) => {
-    console.log(`Transaction with ${req.params.address} address read.`);
-    const txs = BCInstance.getTransactionsOfAddress(req.params.address);
-    return res.json({ transactions: txs });
+    if (!found) return res.json({blocks: BCInstance.chain});
+    return res.json({block: found});
 });
 
 router.post("/make-transaction", (req, res) => {
-    const { privateKey, toAddress, amount } = req.body;
+    const {privateKey, toAddress, amount} = req.body;
     if (!privateKey || !toAddress) {
         return res.status(400).json({
             error: `Bad request. Be sure to provide: ${
@@ -74,23 +78,23 @@ router.post("/make-transaction", (req, res) => {
         tx.isValid(balance);
     } catch (e) {
         console.log(`Transaction (from ${walletAddress} to ${toAddress}, amount: ${amount}) creation failed with '${e.message}'`);
-        return res.status(400).json({ error: e.message });
+        return res.status(400).json({error: e.message});
     }
     BCInstance.addTransaction(tx);
-    res.json({ ok: true });
+    res.json({ok: true});
 });
 
 router.post("/mine-block", (req, res) => {
     const address = req.body.address;
-    if (!address) return res.status(400).send({ error: "No reward address provided." });
+    if (!address) return res.status(400).send({error: "No reward address provided."});
     console.log(`Mining pending transactions by ${address}.`);
-    res.send({ message: "Mining started" });
+    res.send({message: "Mining started"});
     BCInstance.minePendingTransactions(address);
 });
 
 app.use(router);
 
-const PORT = 6666;
+const PORT = 8080;
 app.listen(PORT, () => {
-   console.log(`Listening on ${PORT}`);
+    console.log(`Listening on ${PORT}`);
 });

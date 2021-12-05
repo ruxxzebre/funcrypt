@@ -1,6 +1,8 @@
 import {Card, Button, ListGroup, ListGroupItem} from "react-bootstrap";
+import {useRouter} from "next/router";
 
 const Cardy = ({order, block}) => {
+    const router = useRouter();
     return <Card style={{width: '18rem', margin: "10px"}}>
         {/*<Card.Img variant="top" src="holder.js/100px180"/>*/}
         <Card.Body>
@@ -16,7 +18,7 @@ const Cardy = ({order, block}) => {
             {/*    Some quick example text to build on the card title and make up the bulk of*/}
             {/*    the card's content.*/}
             {/*</Card.Text>*/}
-            <Button variant="primary">View transactions</Button>
+            <Button variant="primary" onClick={() => router.push(`/transactions/${block.hash}`)}>View transactions</Button>
         </Card.Body>
     </Card>
 }

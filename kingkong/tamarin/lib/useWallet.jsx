@@ -1,26 +1,16 @@
 import { useEffect } from "react";
 import useSWR from "swr";
 import { useRouter } from "next/router";
-
-const fetcher = async (url) => {
-  const res = await fetch(url);
-
-  // If the status code is not in the range 200-299,
-  // we still try to parse and throw it.
-  if (!res.ok) {
-    const error = new Error("An error occurred while fetching the data.");
-    // Attach extra info to the error object.
-    error.info = await res.json();
-    error.status = res.status;
-    throw error;
-  }
-
-  return res.json();
-};
+import { fetcher } from "./fetcher";
 
 export function useBalance() {
-  const { data: balance } = useSWR("/api/balance", fetcher);
-  return { balance };
+  const { data } = useSWR("/api/balance", fetcher);
+  return { balance: data?.balance };
+}
+
+export function useGenerateWallet() {
+  const { data } = useSWR("/api/generateWallet", fetcher);
+  return { data };
 }
 
 export default function useUser({
