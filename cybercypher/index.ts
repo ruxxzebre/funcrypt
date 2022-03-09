@@ -56,35 +56,6 @@ type Vigenere = {
 
 const vigenere: Partial<Vigenere> = {};
 
-// vigenere.encrypt = (i, k) => {
-//   const keyAlpha = k.split("").map((i) => getAlphPos(i));
-//   let tempBlock = [];
-//   const blocks: number[][] = i.split("").reduce((a, c, idx, { length }) => {
-//     if (idx % keyAlpha.length === keyAlpha.length - 1 && idx !== 0) {
-//       tempBlock.push(c);
-//       a.push(tempBlock.map((i) => getAlphPos(i)));
-//       tempBlock = [];
-//     } else {
-//       tempBlock.push(c);
-//     }
-//     if (idx === length - 1 && tempBlock.length > 0) {
-//       a.push(tempBlock.map((i) => getAlphPos(i)));
-//     }
-//     return a;
-//   }, []);
-//   return blocks.reduce(
-//     (a, c) =>
-//       a +
-//       c
-//         .map((i, idx) =>
-//           i >= OFFSET ? i : (i + keyAlpha[idx]) % alphabetLC.length
-//         )
-//         .map((i) => getCharByCode(i))
-//         .join(""),
-//     ""
-//   );
-// };
-
 function vigenereCipher(phrase: string, key: string, encrypt: boolean) {
   let keyArray: number[] = key.split('').map(c => findOffset(c));
   let letters: number[] = [];
