@@ -4,7 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon ./src/index.ts"
+    "dev": "nodemon ./src/index.ts",
+    "hash": "ts-node src/hash.ts",
+    "sign": "ts-node src/signatures.ts"
   },
   "devDependencies": {
     "@types/elliptic": "^6.4.14",
@@ -15,6 +17,7 @@
     "typescript": "^4.6.2"
   },
   "dependencies": {
-    "elliptic": "^6.5.4"
+    "elliptic": "^6.5.4",
+    "js-sha256": "^0.9.0"
   }
 }
